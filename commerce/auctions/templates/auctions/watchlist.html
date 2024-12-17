@@ -1,0 +1,47 @@
+{% extends 'auctions/layout.html' %}
+{% block body %}
+
+    {% for list in Products %}
+        {% if list.Pr_watchlist %}
+            <ul style="list-style-type: none;">
+                <div style="display: flex; border: 2px solid black; max-width: max-content; padding: 20px;">
+                    <div style="margin-right: 40px;">
+                        <!--Listing Details-->
+                        <a href="{% url 'Product' list.id %}"><li><h1>{{ list.Pr_name.name }}</h1></li></a>
+                        <li>Description: {{ list.Pr_description }}</li>
+                        <li>Category: {{ list.Pr_category }}</li>
+                        <li style="font-weight: bold;">Highest Bid: ${{ list.Pr_price.bids }}</li>
+                        <li>Status: {{ list.Pr_status }}</li>
+                        {% if names.is_authenticated %}
+                            {% if list.Pr_watchlist %}
+                            <!-- If user is authenticated then can do the following-->
+                                <form action="{% url 'removewatchlist' list.id %}" mathod="POST">
+                                    {% csrf_token %}
+                                    <!-- Remove watchlist-->
+                                    <button name="watch1" type="submit" value="False" style="background-color: rgb(53, 77, 172); color: white;">Watchlist</button>
+                                </form>
+                            {% else %}
+                            <!-- Add Watchlist -->
+                                <form action="{% url 'addwatchlist' list.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button name="watchlist" type="submit" value="True" >Add Watchlist</button>
+                                </form>
+                            {% endif %}
+                            {% if not list.Pr_status %}
+                                {{ msg }}
+                            {% endif %}
+                        {% else %}
+                            <p>Please sign-in.</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <li>
+                            <img src="{{ list.Pr_image }}" style="width: 480px; height: 400px;">
+                        </li>
+                    </div>
+                </div>
+            </ul>
+            {% endif %}
+    {% endfor %}
+
+{% endblock %}
