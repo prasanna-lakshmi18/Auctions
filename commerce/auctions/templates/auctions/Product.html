@@ -1,0 +1,88 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<div style="display: grid; justify-content: center; margin: 30px;">
+    <ul style="list-style-type: none;">
+        <div style="display: flex; border: 2px solid rgb(245, 228, 228); max-width: max-content; padding: 20px;">
+            <div style="margin-right: 40px;">
+                <!-- Listing Details -->
+                <li><h1>{{ list.Pr_name.name }}</h1></li>
+                <li style="word-wrap: break-word; word-break: normal;white-space: pre-wrap;max-width: 300px; ">Description: {{ list.Pr_description }}</li>
+                <li>Category: {{ list.Pr_category }}</li>
+                <li>Opening Bid: ${{ min_bid }}</li>
+                <li style="font-weight: bold;">Highest Bid: ${{ list.Pr_price.bids }}</li>
+                <li><b>Status: {{ list.Pr_status }}</b></li>
+                <li>Owner: {{ list.user_List }}</li>
+                
+                {% if watch_l %}
+                <!-- Remove Watchlist -->
+                    <form action="{% url 'removewatchlist' list.id %}" mathod="POST">
+                        {% csrf_token %}
+                        <button  type="submit" value="False" style="background-color: rgb(53, 77, 172); color: white;">Watchlist</button>
+                    </form> 
+                {% else %}
+                <!-- Add Watchlist -->
+                    <form action="{% url 'addwatchlist' list.id %}" method="POST">
+                        {% csrf_token %}
+                        <button name="watchlist" type="submit" value="True" >Add Watchlist</button>
+                    </form>
+                {% endif %}
+                {% if names.is_authenticated %}
+                    {% if list.Pr_status %}
+                    <!-- bid-->
+                        <small style="color: red;">{{ message }}</small>
+                        <form action="{% url 'bidd' list.id %}" method="POST">
+                            {% csrf_token %}
+                            <li><small style="color: green">{{ mesg }}</small></li>
+                            <input type="number" name="bid" placeholder="Enter bid more then price">
+                            <br>
+                            <button type="submit">Bid</button>
+                            
+                        </form>
+                            <li><!-- Delete-->
+                                <li>
+                                    {% if list.user_List == names %}
+                                        <form action="{% url 'delete' list.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <input name="dele" type="hidden" value="False">
+                                            <button type="submit">Delete</button>
+                                        </form>
+                                    {% endif %}    
+                                </li>
+                            </li>
+                            <br>
+                    {% else %}
+                        {{ msg }} with ${{ list.Pr_price.bids}}.
+                            {% if names == list.Pr_price.User %}
+                                <b><p style="color: green;">The Auction is won by YOU {{ list.Pr_price.User }} !</p></b>
+                            {% endif %}
+                    {% endif %}
+                    <!-- Comments -->
+                    <h5>Comments</h5>
+                    <form action="{% url 'comment' list.id %}" method="POST">
+                        {% csrf_token %}
+                        <input name="comm" type="text" placeholder="Enter New Comment">
+                   </form>
+                    <div>
+                        {% for li in co %}
+                            {% if li.Commenter.Pr_name == list.Pr_name %}
+                                <p><span style="font-weight: bold;">{{ li.Comment_User}}</span>  {{ li.Pr_comment }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>    
+                {% else %}
+                    <p>Please sign-in.</p>
+                {% endif %}
+            </div>
+            <div>
+                <li>
+                    <img src="{{ list.Pr_image }}" style="width: 480px; height: 400px;">
+                </li>
+            </div>
+        </div>
+        
+    </ul>
+</div>
+
+{% endblock %}

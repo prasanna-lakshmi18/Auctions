@@ -1,0 +1,43 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% block head %}
+    <style>
+        input,button,textarea,select{
+            width:350%;
+            margin-left: -150px;
+        }
+    </style>
+
+{% endblock %}
+{% block body %}
+{% if user.is_authenticated %}
+    <h1 style="text-align: center;">Create Listing</h1>
+    <main>
+        <form action="{% url 'Create_Listing' %}" method="POST">
+            {% csrf_token %}
+            <div style="display: grid; justify-content: center;padding: 60px;">
+                <input name="name" type="text" placeholder="Enter Product Name" required>
+                <br>
+                <textarea name="Description" type="text" placeholder="Enter product description" required></textarea>
+                <br>
+                <input name="Category" type="text" placeholder="Enter product Category" required>
+                <br>
+                <input name="img_url" type="text" placeholder="Enter Image url" required>
+                <br>
+                <input name="Price" type="number" placeholder="Enter min price" required>
+                <small>Enter True or False only</small>
+                <select name="status">
+                    <label>Status</label>
+                    <option value="True">True</option>
+                    <option value="False">False</option>
+                </select>
+                <br>
+                <button type="submit" width="100px" class="btn btn-primary"value="submit">Submit</button>
+            </div>
+        </form>
+    </main>
+{% else %}
+    <p style="display: flex; justify-content: center;">Please sign-in</p>
+{% endif %}
+
+{% endblock %}

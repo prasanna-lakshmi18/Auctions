@@ -1,0 +1,42 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'auctions/register.css' %}">
+    <style>
+        .body-1{
+            align-items: center;
+        }
+        .form-group{
+            width:50%;
+        }
+        input{
+            margin-left:13%;
+            margin-right: 13%;
+        }
+        
+    </style>
+{% endblock %}
+
+{% block body %}
+<div style="align-items: center; margin-left: 26%;" class="body-1">
+
+    <h2 style="margin-left:26%; margin-top: 2%;">Login</h2>
+
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="password" name="password" placeholder="Password">
+        </div>
+        <input class="btn btn-primary"style="margin-left: 27%; margin-top: 1.8%;" type="submit" value="Login">
+    </form>
+
+    <p style="margin-left: 18%; margin-top: 1%;">Don't have an account? <a href="{% url 'register' %}">Register here.</a></p>
+</div>
+{% endblock %}

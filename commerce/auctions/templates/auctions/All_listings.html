@@ -1,0 +1,30 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+    <div style="margin: 30px; display: flex; ">
+        <ul style="list-style-type: none;display:flex; flex-wrap: wrap; flex: 1 1 50%;">
+            {% for li in list %}
+                <div style="display: grid; box-shadow: 3px 3px 3px 3px rgb(213, 202, 202); padding: 20px; margin-right: 30px;margin-top: 30px; background-color: white;">
+                    <div >
+                        <li>
+                            <img src="{{ li.Pr_image }}" style="width: 180px; height: 180px;">
+                        </li>
+                    </div>
+                    <div style="margin-right: 40px;gap: 2px; max-inline-size: 150px; writing-mode: horizontal-tb;">
+                        {% if name.is_authenticated %}
+                            <a href="{% url 'Product' li.id %}"><li>{{ li.Pr_name.name }}</li></a>
+                        {% else %}
+                            <li>{{ li.Pr_name.name }}</li>
+                        {% endif %}
+                        <li style="word-wrap: break-word; word-break: normal;white-space: pre-wrap; ">{{ li.Pr_description }}</li>
+                        <li>{{ li.Pr_category }}</li>
+                        <li style="font-weight: bold;">{{ li.Pr_price.bids }}</li>
+                        <li>{{ li.Pr_status }}</li>
+                    </div>
+                </div>
+                <br>
+                <br>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
