@@ -1,5 +1,8 @@
-# Auctions
+# Auctions Galaxy
 An online bidding website.
+
+## Screenshot
+![Auctions demonstration screeshot](https://github.com/prasanna-lakshmi18/Auctions/blob/main/image.png)
 
 ## Files & Directories
 
